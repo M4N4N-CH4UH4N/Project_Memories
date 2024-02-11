@@ -8,8 +8,11 @@ import dotenv from 'dotenv';
 
 import postRoutes from './routes/posts.js';
 import userRouter from "./routes/user.js";
+// const path = require('path');
+import * as path from 'path';
+const __dirname = path.resolve();
 
-// const dotenv = require("dotenv");
+
 dotenv.config();
 
 const app = express();
@@ -21,6 +24,10 @@ app.use(cors());
 app.use('/posts', postRoutes);
 app.use("/user", userRouter);
 
+app.use(express.static(path.join(__dirname, './client/build')));
+app.get('*', function(req,res){
+  res.sendFile(path.join(__dirname, './client/build/index.html'))
+});
 
 
 const CONNECTION_URL = process.env.URL;
